@@ -14,7 +14,8 @@ app.use(cors({
 
 app.use((req, res, next) => {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  console.log('Client IP:', ip);
+  console.log('Client IP:', ip[0]);
+
   next();
 });
 
