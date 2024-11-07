@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors')
+const crypto = require('crypto');
 require('dotenv').config();
 
 const port = 3002;
