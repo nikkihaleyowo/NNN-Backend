@@ -18,7 +18,8 @@ app.use((req, res, next) => {
   console.log('Client IP:', ip );
   const hash = crypto.createHash('sha256').update(ip).digest('hex');
   const shortHash = hash.substring(0, 8);
-  req.body.userId = shortHash;
+  console.log("hash: "+shortHash)
+  req.userId = shortHash;
   next();
 });
 
