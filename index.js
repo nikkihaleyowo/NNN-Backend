@@ -14,8 +14,10 @@ app.use(cors({
 
 app.use((req, res, next) => {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  console.log('Client IP:', ip[0]);
-
+  console.log('Client IP:', ip );
+  const hash = crypto.createHash('sha256').update(ip).digest('hex');
+  const shortHash = hash.substring(0, 8);
+  req.body.userId = shortHash;
   next();
 });
 

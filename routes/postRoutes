@@ -47,7 +47,9 @@ router.post('/reply', async (req,res)=>{
 })
 
 router.get('/getPosts/:page', async (req, res) => {
-  
+
+  console.log(req.body.userId)
+
   const posts = await PostModel.find().sort({ updatedAt: -1 }).limit(40);
 
   const page = req.params.page;
