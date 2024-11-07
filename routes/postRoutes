@@ -13,6 +13,7 @@ router.post('/createPost', async (req,res)=>{
     text: req.body.text,
     image: req.body.image,
     title: req.body.title,
+    userId: req.userId,
   }
   try{
     const newPost = await PostModel.create(postToAdd);
@@ -29,6 +30,7 @@ router.post('/reply', async (req,res)=>{
     hasImage: req.body.hasImage,
     text: req.body.text,
     image: req.body.image,
+    userId: req.userId,
   }
   try{
     PostModel.findByIdAndUpdate(req.body.id, {

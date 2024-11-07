@@ -12,6 +12,10 @@ const ReplySchema = mongoose.Schema({
   text:{
     type: String,
     required: true
+  },
+  userId: {
+    type:String,
+    required:true
   }
 })
 
@@ -35,6 +39,10 @@ const PostSchema = mongoose.Schema({
   title:{
     type: String,
     required: true
+  },
+  userId:{
+    type: String,
+    required:true
   }
 }, { timestamps: true })
 
