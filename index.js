@@ -5,9 +5,13 @@ const cors = require('cors')
 const crypto = require('crypto');
 require('dotenv').config();
 
+//const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+
 const port = 3002;
 
-const postRoutes = require('./routes/postRoutes')
+const postRoutes = require('./routes/postRoutes.js')
+const paymentRoutes = require('./routes/paymentRoutes.js')
 
 app.use(cors({
   origin: '*'
@@ -23,8 +27,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/payment/webhook', express.raw({ type: 'application/json' })); // <-- FIX
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
+app.use('/api/payment', paymentRoutes)
 
 
 mongoose.connect(process.env.MONGO_URL)
@@ -34,6 +40,8 @@ mongoose.connect(process.env.MONGO_URL)
   .catch(()=>{
     console.log("Couldn't connect to MongoDB");
   })
+
+
 
 app.use('/api/post', postRoutes)
 

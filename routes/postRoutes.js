@@ -32,11 +32,43 @@ router.post('/reply', async (req,res)=>{
     image: req.body.image,
     userId: req.userId,
   }
+  const text =req.body.text;
+  const regex = /@\{(.*?)\}/g;
+  const matches = text.matchAll(regex);
+  const postReplies = [...matches].map(match => match[1])
+  console.log(postReplies)
   try{
     PostModel.findByIdAndUpdate(req.body.id, {
       $push :{replies: replyToAdd}
     },{new: true}).then(post=>{
       console.log('added reply')
+      try {
+        postReplies.map(reply => {
+          const postId = req.body.id;
+          const newReply = {
+            replyId : post.replies[post.replies.length-1]._id,
+            userId : post.userId,
+          }
+
+          PostModel.findOneAndUpdate(
+            { _id: postId, 'replies._id': reply },
+            {
+              $push: {
+                'replies.$.replies': newReply
+              }
+            },
+            { new: true }
+          ).then(updatedPost=>{
+            console.log("pp: ")
+            console.log(updatedPost)
+          }).catch(err => {
+            console.log("couldnt find")
+          })
+        })
+      } catch (error) {
+        //res.status(403).json({error: error});
+        console.log(error.message)
+      }
       res.status(202).json(post);
     }).catch(err=>{
       console.log(err.message)

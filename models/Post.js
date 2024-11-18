@@ -1,5 +1,15 @@
 const mongoose = require('mongoose')
 
+const ReplyListSchema = mongoose.Schema({
+  replyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  userId: {
+    type: String,
+    required: true,
+  }
+})
 
 const ReplySchema = mongoose.Schema({
   image: {
@@ -16,7 +26,8 @@ const ReplySchema = mongoose.Schema({
   userId: {
     type:String,
     required:true
-  }
+  },
+  replies: [ReplyListSchema],
 })
 
 const PostSchema = mongoose.Schema({
@@ -28,6 +39,9 @@ const PostSchema = mongoose.Schema({
     required: true,
   },
   replies: [ReplySchema],
+  directReplies:[{
+    type: String,
+  }],
   text:{
     type: String,
     default: "",
@@ -43,6 +57,10 @@ const PostSchema = mongoose.Schema({
   userId:{
     type: String,
     required:true
+  },
+  tier:{
+    type: Number,
+    default: -1,
   }
 }, { timestamps: true })
 
